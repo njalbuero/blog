@@ -1,7 +1,8 @@
 <?php
 
 return [
-
+    
+    'log' => 'errorlog',
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -229,5 +230,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
+    
 
 ];
