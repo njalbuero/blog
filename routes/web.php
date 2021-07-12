@@ -1,13 +1,16 @@
 <?php
 
-use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Category;
+use Symfony\Component\Yaml\Yaml;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\SessionController;
 use Spatie\YamlFrontMatter\YamlFrontMatter;
-use Symfony\Component\Yaml\Yaml;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,18 +23,12 @@ use Symfony\Component\Yaml\Yaml;
 |
 */
 
-Route::get('/', function () {
-    return view('posts', ['posts' => Post::latest()->get()]);
-});
+Route::get('/', [PostController::class, 'index'])->name('home');
+Route::get('posts/{post}', [PostController::class, 'show'])->name('show');
 
-Route::get('posts/{post}', function (Post $post) {
-    return view('post', ['post' => $post]);
-});
+Route::get('register', [UserController::class, 'create'])->middleware('guest');
+Route::post('register', [UserController::class, 'store'])->middleware('guest');
 
-Route::get('categories/{category:slug}', function (Category $category) {
-    return view('posts', ['posts' => $category->posts]);
-});
-
-Route::get('authors/{author:username}', function (User $author) {
-    return view('posts', ['posts' => $author->posts]);
-});
+Route::get('login', [SessionController::class, 'create'])->middleware('guest');
+Route::post('login', [SessionController::class, 'store'])->middleware('guest');
+Route::post('logout', [SessionController::class, 'destroy'])->middleware('auth');

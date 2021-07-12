@@ -8,22 +8,14 @@
             <div>{!! $post->excerpt !!}</div>
         </article>
     @endforeach --}}
-    @include('_posts-header')
+    @include('posts._header')
+
     <main class="max-w-6xl mx-auto mt-6 lg:mt-20 space-y-6">
         @if ($posts->count())
-            <x-featured-post-card :post="$posts[0]" />
-            @if ($posts->count() > 1)
-                <div class="lg:grid lg:grid-cols-2">
-                    @foreach ($posts->skip(1) as $post)
-                        <x-post-card :post="$post" />
-                    @endforeach
-                </div>
-            @endif
+            <x-posts-grid :posts="$posts"></x-posts-grid>
+            {{$posts->links()}}
         @else
             <p class="text-center">No posts yet. Please Check back later.</p>
         @endif
-
-
-
     </main>
 </x-layout>
